@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>GeoTileset below the ellipsoid: deep</title>
+<link rel='stylesheet' href='x3dom.css'>
+<script src='x3dom-full.js'></script>
+<style>
+  html, body { margin: 0; overflow: hidden; font-family: sans-serif; }
+  x3d { display: block; width: 100vw !important; height: 100vh !important; }
+  #status { position: absolute; top: 4px; left: 4px; z-index: 10; background: rgba(255,255,255,.85); padding: 4px 8px; font: 13px monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<div id='status'>DEEP: heights are negative
+seafloor at about -2189 m above the WGS 84 ellipsoid
+(waiting for the tileset)</div>
+<x3d showStat='true'>
+  <scene>
+    <navigationInfo type='"EXAMINE" "ANY"'></navigationInfo>
+    <background skyColor='0.7 0.8 0.9'></background>
+    <GeoViewpoint DEF='VIEW' description='Looking down at the tileset' geoSystem='"GD" "WE"'
+        position='36.637514 -122.399356 -2129' orientation='1 0 0 -1.5708'
+        centerOfRotation='36.637514 -122.399356 -2189'>
+      <GeoOrigin DEF='ORIGIN' geoSystem='"GD" "WE"' geoCoords='36.637514 -122.399356 -2189'></GeoOrigin>
+    </GeoViewpoint>
+    <GeoTileset url='"deep/tileset.json"'>
+      <GeoOrigin USE='ORIGIN'></GeoOrigin>
+    </GeoTileset>
+  </scene>
+</x3d>
+<script>
+// Show what GeoTiles computed from the camera, once per second.
+setInterval(function () {
+  var e = document.querySelector('GeoTiles');
+  var g = e && e._x3domNode, v = g && g.viewport, t = g && g.tileset3d;
+  if (!t) return;
+  document.getElementById('status').textContent =
+    'DEEP: heights are negative\nseafloor at about -2189 m above the WGS 84 ellipsoid\n' +
+    'selected tiles: ' + t.selectedTiles.length + ' of ' + t.root.children.length +
+    '\nviewport zoom ' + v.zoom.toFixed(2) + ', pitch ' + v.pitch.toFixed(1) +
+    ', bearing ' + v.bearing.toFixed(1);
+}, 1000);
+</script>
+</body>
+</html>
